@@ -252,7 +252,7 @@ class CrProject():
         basePath = "/projects/fd/projects"
 
         # 1. Root Project folder
-        rootPath = os.path.join(basePath, self.name.lower()) # LOWER USED !!!!!!!!!!
+        rootPath = os.path.join(basePath, self.name.lower()) # LOWER USED !!!!!!!!!! TODO
         CreateProjectFolder(rootPath)
 
         # 2. Root Folders
@@ -323,6 +323,8 @@ class CrProject():
                 CreateProjectFolder(layoutCachePath)
                 lightingCachePath = os.path.join(cachePath, "lighting")
                 CreateProjectFolder(lightingCachePath)
+                previsCachePath = os.path.join(cachePath, "previs")
+                CreateProjectFolder(previsCachePath)
                 trackingCachePath = os.path.join(cachePath, "tracking")
                 CreateProjectFolder(trackingCachePath)
 
@@ -341,6 +343,8 @@ class CrProject():
                 CreateProjectFolder(layoutRenderPath)
                 lightingRenderPath = os.path.join(renderPath, "lighting")
                 CreateProjectFolder(lightingRenderPath)
+                previsRenderPath = os.path.join(renderPath, "previs")
+                CreateProjectFolder(previsRenderPath)
                 trackingRenderPath = os.path.join(renderPath, "tracking")
                 CreateProjectFolder(trackingRenderPath)
 
@@ -355,6 +359,8 @@ class CrProject():
                 CreateProjectFolder(layoutScenesPath)
                 lightingScenesPath = os.path.join(scenesPath, "lighting")
                 CreateProjectFolder(lightingScenesPath)
+                previsScenesPath = os.path.join(scenesPath, "previs")
+                CreateProjectFolder(previsScenesPath)
                 trackingScenesPath = os.path.join(scenesPath, "tracking")
                 CreateProjectFolder(trackingScenesPath)
 
@@ -369,12 +375,13 @@ class CrProject():
             # Asset Root folders
             dataAssetPath = os.path.join(assetPath, "data")
             CreateProjectFolder(dataAssetPath)
+            referenceAssetPath = os.path.join(assetPath, "reference")
+            CreateProjectFolder(referenceAssetPath)
             renderAssetPath = os.path.join(assetPath, "render")
             CreateProjectFolder(renderAssetPath)
             scenesAssetPath = os.path.join(assetPath, "scenes")
             CreateProjectFolder(scenesAssetPath)
-            referenceAssetPath = os.path.join(assetPath, "reference")
-            CreateProjectFolder(referenceAssetPath)
+
 
             # Data paths
             cacheAssetPath = os.path.join(dataAssetPath, "cache")
@@ -384,6 +391,8 @@ class CrProject():
 
             conceptCachePath = os.path.join(cacheAssetPath, "concept")
             CreateProjectFolder(conceptCachePath)
+            hairCachePath = os.path.join(cacheAssetPath, "hair")
+            CreateProjectFolder(hairCachePath)
             modelingCachePath = os.path.join(cacheAssetPath, "modeling")
             CreateProjectFolder(modelingCachePath)
             riggingCachePath = os.path.join(cacheAssetPath, "rigging")
@@ -396,6 +405,8 @@ class CrProject():
             # Render Paths
             conceptRenderPath = os.path.join(renderAssetPath, "concept")
             CreateProjectFolder(conceptRenderPath)
+            hairRenderPath = os.path.join(renderAssetPath, "hair")
+            CreateProjectFolder(hairRenderPath)
             modelingRenderPath = os.path.join(renderAssetPath, "modeling")
             CreateProjectFolder(modelingRenderPath)
             riggingRenderPath = os.path.join(renderAssetPath, "rigging")
@@ -408,6 +419,8 @@ class CrProject():
             # Scenes Paths
             conceptScenesPath = os.path.join(scenesAssetPath, "concept")
             CreateProjectFolder(conceptScenesPath)
+            hairScenesPath = os.path.join(scenesAssetPath, "hair")
+            CreateProjectFolder(hairScenesPath)
             modelingScenesPath = os.path.join(scenesAssetPath, "modeling")
             CreateProjectFolder(modelingScenesPath)
             riggingScenesPath = os.path.join(scenesAssetPath, "rigging")

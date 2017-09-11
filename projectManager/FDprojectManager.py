@@ -32,15 +32,15 @@ class FdProjectManagerGUI (QtGui.QWidget):
         lineInputPass  = QtGui.QLineEdit()
         lineInputPass.setAutoFillBackground(True)
         self.buttonLogin    = QtGui.QPushButton("Login to Cerebro/Get Projects List")
-        iconLogin = QtGui.QIcon(QtGui.QPixmap('icons/login.png'))
+        iconLogin = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/login.png'))
         self.buttonLogin.setIcon(iconLogin)
 
         self.buttonGenerateProject = QtGui.QPushButton("Load Selected Project Data:")
-        iconLoad = QtGui.QIcon(QtGui.QPixmap('icons/loadData.png'))
+        iconLoad = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/loadData.png'))
         self.buttonGenerateProject.setIcon(iconLoad)
 
         self.buttonCreateFolderStructure = QtGui.QPushButton("Create Folder structure:")
-        iconCreate = QtGui.QIcon(QtGui.QPixmap('icons/createFolders.png'))
+        iconCreate = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/createFolders.png'))
         self.buttonCreateFolderStructure.setIcon(iconCreate)
 
         hboxUname = QtGui.QHBoxLayout()
@@ -62,8 +62,8 @@ class FdProjectManagerGUI (QtGui.QWidget):
 
         loginColumnLayout.addStretch()
 
-        self.iconGreen = QtGui.QIcon(QtGui.QPixmap('icons/GREEN_light.png'))
-        self.iconRed = QtGui.QIcon(QtGui.QPixmap('icons/RED_light.png'))
+        self.iconGreen = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/GREEN_light.png'))
+        self.iconRed = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/RED_light.png'))
 
         # Second column
         # Projects List
@@ -196,7 +196,7 @@ class FdProjectManagerGUI (QtGui.QWidget):
         if self.db.connect_from_cerebro_client() != 0:
             self.db.connect(user, password)
 
-        projectsList = cerebroreadNew.GetRootProjects(self.db)
+        projectsList = cerebroRead.GetRootProjects(self.db)
         filteredProjectsList = filters.FilterProjects(projectsList)
         filteredProjectsList.sort()
 
