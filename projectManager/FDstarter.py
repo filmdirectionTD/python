@@ -460,8 +460,7 @@ class FdstarterGUI (QtGui.QWidget):
                             windowTitle = self.selectedProject.lower() + "_" + self.selectedEpisode + "_" + self.selectedShot + "_" + self.selectedJob + "_ASSET"
                             args = self.selectedProject.lower() + " " + self.selectedEpisode + " " + self.selectedShot + " " + self.selectedJob
                             subprocess.Popen(
-                                # "xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /fd/lib/python/projectManager/MayaStart.py " + args,
-                                "xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /home/asknarin/FilmDirectionScriptsRnD/python/projectManager/MayaStart.py " + args,
+                                "xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /fd/lib/python/projectManager/MayaStart.py " + args,
                                 shell=True)
                         else:
                             self.statusBar.showMessage(
