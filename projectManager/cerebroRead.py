@@ -85,6 +85,13 @@ def GetJobs(project, episode, shot, cerebroDataBase):
         childrenList.append(task[4])
     return childrenList
 
+def GetAssetJobs(project, asset, cerebroDataBase):
+    jobsID = cerebroDataBase.task_by_url("/"+ project + "/assets/" + asset)
+    childrenTable = cerebroDataBase.task_children(jobsID[0])
+    childrenList = []
+    for task in childrenTable:
+        childrenList.append(task[4])
+    return childrenList
 
 def GetJobsFromRoot(project, shot, cerebroDataBase):
     jobsID = cerebroDataBase.task_by_url("/"+ project + "/SCENES/" + shot)

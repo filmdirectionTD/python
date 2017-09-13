@@ -206,6 +206,7 @@ class FdstarterGUI (QtGui.QWidget):
 
         #
         self.buttonStartHoudini.clicked.connect(self.StartHoudini)
+        self.buttonStartMaya.clicked.connect(self.StartMaya)
 
         #general window setup---------------------------------
 
@@ -415,7 +416,7 @@ class FdstarterGUI (QtGui.QWidget):
                             args = self.selectedProject.lower() + " " + self.selectedEpisode + " " + self.selectedShot + " " + self.selectedJob
                             subprocess.Popen("xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /fd/lib/python/projectManager/HoudiniStart.py " + args, shell=True)
                         else:
-                            self.statusBar.showMessage("Select othe job: " + self.selectedJob + " is inappropriate for Houdini")
+                            self.statusBar.showMessage("Select other job: " + self.selectedJob + " is inappropriate for Houdini")
                     else:
                         self.statusBar.showMessage("Select Asset Job:")
                 else:
@@ -432,7 +433,7 @@ class FdstarterGUI (QtGui.QWidget):
                             args = self.selectedProject.lower() + " " + self.selectedEpisode + " " + self.selectedShot + " " + self.selectedJob
                             subprocess.Popen("xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /fd/lib/python/projectManager/HoudiniStart.py " + args, shell=True)
                         else:
-                            self.statusBar.showMessage("Select othe job: " + self.selectedJob + " is inappropriate for Houdini")
+                            self.statusBar.showMessage("Select other job: " + self.selectedJob + " is inappropriate for Houdini")
                     else:
                         self.statusBar.showMessage("Select Job:")
                 else:
@@ -440,6 +441,57 @@ class FdstarterGUI (QtGui.QWidget):
             else:
                 self.statusBar.showMessage("Select Episode or Asset:")
 
+    def StartMaya(self):
+        import random
+        import time
+        random.seed(int(time.time()))
+        color = self.bgColors[random.randrange(len(self.bgColors))]
+
+        # Check if project selected
+        if (self.selectedProject != ""):
+            # Check if assets or episides selected
+            if (self.selectedEpisode == "assets"):
+                # Check if asset and asset job are selected
+                if (self.selectedShot != ""):
+                    if (self.selectedJob != ""):
+                        # Check for jobs appropriate for Houdini assets
+                        if (self.selectedJob in "animation modeling tracking layout"):
+                            print "Starting Maya for asset"
+                            windowTitle = self.selectedProject.lower() + "_" + self.selectedEpisode + "_" + self.selectedShot + "_" + self.selectedJob + "_ASSET"
+                            args = self.selectedProject.lower() + " " + self.selectedEpisode + " " + self.selectedShot + " " + self.selectedJob
+                            subprocess.Popen(
+                                # "xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /fd/lib/python/projectManager/MayaStart.py " + args,
+                                "xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /home/asknarin/FilmDirectionScriptsRnD/python/projectManager/MayaStart.py " + args,
+                                shell=True)
+                        else:
+                            self.statusBar.showMessage(
+                                "Select other job: " + self.selectedJob + " is inappropriate for Maya")
+                    else:
+                        self.statusBar.showMessage("Select Asset Job:")
+                else:
+                    self.statusBar.showMessage("Select Asset:")
+            elif (self.selectedEpisode != ""):
+                # Assume that episode selected
+                # Check if shot and job are selected
+                if (self.selectedShot != ""):
+                    if (self.selectedJob != ""):
+                        # Check for jobs appropriate for Houdini shots
+                        if (self.selectedJob in "animation modeling tracking layout"):
+                            print "Starting Maya for shot"
+                            windowTitle = self.selectedProject.lower() + "_" + self.selectedEpisode + "_" + self.selectedShot + "_" + self.selectedJob + "_SHOT"
+                            args = self.selectedProject.lower() + " " + self.selectedEpisode + " " + self.selectedShot + " " + self.selectedJob
+                            subprocess.Popen(
+                                "xterm -xrm 'XTerm*selectToClipboard: true' -geometry 170x55+120+120 -fa 'Monospace' -fs 8 -T " + windowTitle + " -bg " + color + " -sb -sl 100000 -e /fd/lib/python/projectManager/MayaStart.py " + args,
+                                shell=True)
+                        else:
+                            self.statusBar.showMessage(
+                                "Select othe job: " + self.selectedJob + " is inappropriate for Maya")
+                    else:
+                        self.statusBar.showMessage("Select Job:")
+                else:
+                    self.statusBar.showMessage("Select Shot:")
+            else:
+                self.statusBar.showMessage("Select Episode or Asset:")
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

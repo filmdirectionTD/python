@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import subprocess
 
 import sys
@@ -52,7 +53,7 @@ FDBIN = "/fd/lib/maya"
 
 MAYA_SCRIPT_PATH = os.path.join(FDBIN, "mel")
 PYTHONPATH = os.path.join(FDBIN, "python")
-XBMLANGPATH = "/fd/lib/icons"
+XBMLANGPATH = "/fd/lib/icons/%B"
 MAYA_DISABLE_CIP = "1"
 
 
@@ -90,7 +91,7 @@ os.environ["ASSETS"] = ASSETS
 
 os.environ["MAYA_SCRIPT_PATH"] = os.path.join(FDBIN, "mel")
 os.environ["PYTHONPATH"] = os.path.join(FDBIN, "python")
-os.environ["XBMLANGPATH"] = "/fd/lib/icons"
+os.environ["XBMLANGPATH"] = XBMLANGPATH
 os.environ["MAYA_DISABLE_CIP"] = "1"
 
 
