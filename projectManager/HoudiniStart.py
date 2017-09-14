@@ -10,7 +10,6 @@ episodeName = sys.argv[2]
 shotName    = sys.argv[3]
 jobName     = sys.argv[4]
 
-
 # project structure: OLD
 oldProjects = ["SKIF", "IKARIA", "SALUT"]
 newProjects = ["chernobyl"]
@@ -84,7 +83,8 @@ if(projectName in newProjects):
     # Redshift variables
     os.environ["REDSHIFT_COREDATAPATH"] = "/opt/redshift"
     os.environ["HOUDINI_DSO_ERROR"] = "2"
-    os.environ["PATH"] = "/opt/redshift/bin:$PATH"
+    originalPath = os.environ["PATH"]
+    os.environ["PATH"] = originalPath + ":/opt/redshift/bin"
     os.environ["HOUDINI_PATH"] = "/opt/redshift/redshift4houdini/16.0.633:&"
 
     houdiniProcess = subprocess.Popen("/opt/hfs16.0.671/bin/houdinifx", stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, bufsize=1)

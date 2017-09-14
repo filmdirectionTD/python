@@ -8,6 +8,28 @@ import filters
 
 import subprocess
 
+# --------------- Custom Line Edit Class -------------------------------------------------------------------------------
+
+class FDLineEdit(QtGui.QLineEdit):
+    def __init__(self, value):
+        super(FDLineEdit, self).__init__(value)
+
+    def mousePressEvent(self, QMouseEvent):
+        self.emit(QtCore.SIGNAL("clicked()"))
+
+
+
+
+# class FDLineEdit(QtGui.QLineEdit):
+#     mousePressed = QtCore.Property(QtGui.QMouseEvent)
+#
+#     def __init__(self, value):
+#         super(FDLineEdit, self).__init__(value)
+#
+#     def mousePressEvent(self, event):
+#         #print 'forwarding to the main window'
+#         self.mousePressed.emit(event)
+
 
 # --------------- GUI class description --------------------------------------------------------------------------------
 
@@ -23,6 +45,9 @@ class FdstarterGUI (QtGui.QWidget):
         self.db = cerebroRead.database.Database(host, port)
         self.cerebroProject = cerebroRead.CrProject()
         self.model = QtGui.QStandardItemModel()
+
+        self.filterUsed = False
+        self.listShotsToFilter = []
 
         self.selectedProject = ""
         self.selectedEpisode = ""
@@ -45,19 +70,19 @@ class FdstarterGUI (QtGui.QWidget):
         lineInputPass  = QtGui.QLineEdit()
         lineInputPass.setAutoFillBackground(True)
         self.buttonLogin    = QtGui.QPushButton("Login to Cerebro")
-        iconLogin = QtGui.QIcon(QtGui.QPixmap('/home/asknarin/py_projects/icons/login.png'))
+        iconLogin = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/login.png'))
         self.buttonLogin.setIcon(iconLogin)
 
         self.buttonStartHoudini = QtGui.QPushButton("Start Houdini")
-        iconHoudini = QtGui.QIcon(QtGui.QPixmap('/home/asknarin/py_projects/icons/houdini_logo.png'))
+        iconHoudini = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/houdini_logo.png'))
         self.buttonStartHoudini.setIcon(iconHoudini)
 
         self.buttonStartNuke = QtGui.QPushButton("Start Nuke")
-        iconNuke = QtGui.QIcon(QtGui.QPixmap('/home/asknarin/py_projects/icons/nukeIcon.png'))
+        iconNuke = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/nukeIcon.png'))
         self.buttonStartNuke.setIcon(iconNuke)
 
         self.buttonStartMaya = QtGui.QPushButton("Start Maya")
-        iconMaya = QtGui.QIcon(QtGui.QPixmap('/home/asknarin/py_projects/icons/hsMaya.png'))
+        iconMaya = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/hsMaya.png'))
         self.buttonStartMaya.setIcon(iconMaya)
 
 
@@ -81,8 +106,8 @@ class FdstarterGUI (QtGui.QWidget):
 
         loginColumnLayout.addStretch()
 
-        self.iconGreen = QtGui.QIcon(QtGui.QPixmap('icons/GREEN_light.png'))
-        self.iconRed = QtGui.QIcon(QtGui.QPixmap('icons/RED_light.png'))
+        self.iconGreen = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/GREEN_light.png'))
+        self.iconRed = QtGui.QIcon(QtGui.QPixmap('/fd/lib/icons/RED_light.png'))
 
         # Second column
         # Projects List
@@ -98,23 +123,46 @@ class FdstarterGUI (QtGui.QWidget):
         # Episodes List
         labelEpisodes = QtGui.QLabel("Episodes: ")
         self.listEpisodes = QtGui.QListWidget()
+
         labelShots = QtGui.QLabel("Shots: ")
+
+        self.lineInputShotFilter = FDLineEdit("")
+        self.lineInputShotFilter.setText("type shot name ...")
+        self.lineInputShotFilter.setFixedHeight(25)
+        # Setup font
+        palette = QtGui.QPalette()
+        palette.setColor(QtGui.QPalette.Text, QtCore.Qt.gray)
+        font = QtGui.QFont()
+        font.setItalic(True)
+        self.lineInputShotFilter.setPalette(palette)
+        self.lineInputShotFilter.setFont(font)
+
+
+
+
         self.listShots = QtGui.QListWidget()
         labelJobs = QtGui.QLabel("Jobs: ")
         self.listJobs = QtGui.QListWidget()
 
+        shotFilterlayout = QtGui.QHBoxLayout()
+        shotFilterlayout.addWidget(labelShots, 0)
+        shotFilterlayout.addWidget(self.lineInputShotFilter, 1)
+
+
         episodesColumnLayout = QtGui.QVBoxLayout()
         episodesColumnLayout.addWidget(labelEpisodes, 0)
         episodesColumnLayout.addWidget(self.listEpisodes, 1)
+        episodesColumnLayout.setSpacing(8)
 
         shotsColumnLayout = QtGui.QVBoxLayout()
-        shotsColumnLayout.addWidget(labelShots, 0)
+        shotsColumnLayout.addItem(shotFilterlayout)
         shotsColumnLayout.addWidget(self.listShots, 1)
+        shotsColumnLayout.setSpacing(4)
 
         jobsColumnLayout = QtGui.QVBoxLayout()
         jobsColumnLayout.addWidget(labelJobs, 0)
         jobsColumnLayout.addWidget(self.listJobs, 1)
-
+        jobsColumnLayout.setSpacing(8)
 
         episodesGlobalLayout = QtGui.QHBoxLayout()
         episodesGlobalLayout.addItem(episodesColumnLayout)
@@ -194,6 +242,9 @@ class FdstarterGUI (QtGui.QWidget):
         #
         self.listShots.itemClicked.connect(self.ShotClicked)
         self.listShots.itemEntered.connect(self.ShotClicked)
+        #
+        self.connect(self.lineInputShotFilter, QtCore.SIGNAL("clicked()"), self.ShotFilterClicked)
+        self.lineInputShotFilter.textEdited.connect(self.FilterShots)
         #
         self.listJobs.itemClicked.connect(self.JobClicked)
         self.listJobs.itemEntered.connect(self.JobClicked)
@@ -491,6 +542,49 @@ class FdstarterGUI (QtGui.QWidget):
                     self.statusBar.showMessage("Select Shot:")
             else:
                 self.statusBar.showMessage("Select Episode or Asset:")
+
+    def ShotFilterClicked(self):
+        if (self.filterUsed == False):
+            # delete custom text
+            self.filterUsed == True
+            # get list of shots
+            self.listShotsToFilter = cerebroRead.GetShots(self.selectedProject, self.selectedEpisode, self.db)
+            self.listShotsToFilter = filters.FilterShots(self.listShotsToFilter)
+            self.listShotsToFilter.sort()
+            # Setup font
+            palette = QtGui.QPalette()
+            palette.setColor(QtGui.QPalette.Text, QtCore.Qt.black)
+            font = QtGui.QFont()
+            font.setItalic(False)
+            self.lineInputShotFilter.setPalette(palette)
+            self.lineInputShotFilter.setFont(font)
+            self.lineInputShotFilter.setText("")
+        else:
+            self.listShotsToFilter = cerebroRead.GetShots(self.selectedProject, self.selectedEpisode, self.db)
+            self.listShotsToFilter = filters.FilterShots(self.listShotsToFilter)
+            self.listShotsToFilter.sort()
+
+
+    def FilterShots(self):
+        # Clear
+        self.listJobs.clear()
+        self.assetJobsList.clear()
+
+        # Clear all asset selection
+        self.assetsTreeView.clearSelection()
+        self.assetJobsList.clearSelection()
+
+        self.selectedShot = ""
+        self.selectedJob = ""
+
+        self.listShots.clear()
+
+        filterText = self.lineInputShotFilter.text()
+
+        for shot in self.listShotsToFilter:
+            if (filterText in shot):
+                self.listShots.addItem(shot)
+
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
