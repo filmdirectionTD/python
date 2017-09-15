@@ -5,15 +5,15 @@ import sys
 import os
 
 # Get variables from gui
-# projectName = sys.argv[1]
-# episodeName = sys.argv[2]
-# shotName    = sys.argv[3]
-# jobName     = sys.argv[4]
+projectName = sys.argv[1]
+episodeName = sys.argv[2]
+shotName    = sys.argv[3]
+jobName     = sys.argv[4]
 
-projectName = "chernobyl"
-episodeName = "ep02"
-shotName    = "ep02-0010"
-jobName     = "animation"
+# projectName = "chernobyl"
+# episodeName = "ep02"
+# shotName    = "ep02-0010"
+# jobName     = "animation"
 
 # Project management variables
 # PRJ project root path
