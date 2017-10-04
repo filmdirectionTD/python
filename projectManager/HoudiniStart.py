@@ -22,6 +22,7 @@ if(projectName in newProjects):
     HOUDINI_OTLSCAN_PATH = '/fd/lib/houdini/otls:' + PRJ + '/lib/houdini/otls:&'
     # JOB  path to current shot root
     JOB = os.path.join(PRJ, "episodes", episodeName, shotName)
+    SHOT = JOB
     # SCENES path to current folder for scenes
     SCENES = os.path.join(JOB, "scenes")
 
@@ -54,6 +55,7 @@ if(projectName in newProjects):
     print "HOUDINI_OTLSCAN_PATH: " + HOUDINI_OTLSCAN_PATH
     print "PRJ:                  " + PRJ
     print "JOB:                  " + JOB
+    print "SHOT:                 " + SHOT
     print "SCENES:               " + SCENES
     print "RENDER:               " + RENDER
     print "DATA:                 " + DATA
@@ -69,6 +71,7 @@ if(projectName in newProjects):
     os.environ["HOUDINI_OTLSCAN_PATH"] = HOUDINI_OTLSCAN_PATH
     os.environ["PRJ"] = PRJ
     os.environ["JOB"] = JOB
+    os.environ["SHOT"] = SHOT
     os.environ["SCENES"] = SCENES
     os.environ["RENDER"] = RENDER
     os.environ["DATA"] = DATA

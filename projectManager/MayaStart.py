@@ -20,6 +20,7 @@ jobName     = sys.argv[4]
 PRJ = os.path.join("/fd/projects", projectName)
 # JOB  path to current shot root
 JOB = os.path.join(PRJ, "episodes", episodeName, shotName)
+SHOT = JOB
 # SCENES path to current folder for scenes
 SCENES = os.path.join(JOB, "scenes")
 
@@ -59,6 +60,7 @@ MAYA_DISABLE_CIP = "1"
 
 print 'PRJ:               ' + PRJ
 print 'JOB:               ' + JOB
+
 print 'SCENES:            ' + SCENES
 print 'RENDER:            ' + RENDER
 print 'DATA:              ' + DATA
